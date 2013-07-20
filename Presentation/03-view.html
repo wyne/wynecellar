@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Home View</title>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+    <script>
+
+    (function($){
+
+        // Define Wine Model
+        var Wine = Backbone.Model.extend();
+
+        // Define Wines Collection
+        var Wines = Backbone.Collection.extend({
+            Model: Wine
+        });
+
+        // Create instances of Wine model
+        var wine1 = new Wine({winery : "Robert Mondovi"});
+        var wine2 = new Wine({winery : "CakeBread"});
+
+        // Create instance of Wine Collection
+        var wines = new Wines();
+
+        // Add Wine models to the Wines Collection
+        wines.add(wine1);
+        wines.add(wine2);
+
+        // Define a View
+        HomeView = Backbone.View.extend({
+
+            el: 'body',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append("<h1>Wine Cellar</h1>");
+                return this;
+            }
+        });
+
+    }(jQuery));
+
+    $(document).ready(function() {
+        var view = new HomeView();
+    });
+
+    </script>
+
+</head>
+<body></body>
+</html>
