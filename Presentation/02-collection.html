@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Collection</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+
+    <script>
+
+        (function($){
+
+            var Wine = Backbone.Model.extend();
+
+            var Wines = Backbone.Collection.extend({
+                Model: Wine,
+                url: "#"
+            });
+
+            wines = new Wines([
+              {winery : "Robert Mondovi"},
+              {winery : "CakeBread"}
+            ]);
+
+            wines.each( function(model) {
+               console.log(model.get('winery'));
+            });
+
+            wines.each( function(model) {
+               console.log(model.toJSON());
+            });
+
+        }(jQuery));
+
+  	</script>
+
+</head>
+<body></body>
+</html>

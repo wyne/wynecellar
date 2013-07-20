@@ -1,0 +1,1 @@
+define(["jquery","router"],function(e,t){var n=function(){t.initialize()};return{initialize:n}});

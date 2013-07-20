@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>StackMob Model</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+    <script src="http://static.stackmob.com/js/stackmob-js-0.9.1-min.js"></script>
+    <script>
+
+        (function($){
+
+            StackMob.init({
+                publicKey: "2117d3fe-3a6d-4997-aab8-4927d3c8cfab",
+                apiVersion: 0
+            });
+
+            var Wine = StackMob.Model.extend({
+              schemaName : "wine"
+            });
+
+            firstWine = new Wine({
+              winery : 'Clos Pegase',
+              year : '2008',
+              type : 'Chardonnay',
+              size : '750ml',
+            });
+
+            firstWine.create();
+
+        }(jQuery));
+
+  	</script>
+
+</head> 
+<body></body>
+</html>

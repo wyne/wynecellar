@@ -1,0 +1,1 @@
+define(["stackmobinit","models/wine/WineModel"],function(e,t){var n=e.Collection.extend({model:t});return n});

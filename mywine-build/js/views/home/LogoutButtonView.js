@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit"],function(e,t,n,r){var i=n.View.extend({tagName:"a",className:"logout ui-btn-left",initialize:function(){this.render()},render:function(){var e=this.$el,t=StackMob.isLoggedIn();return e.attr("data-role","button"),e.attr("href","#logout"),e.attr("id","logoutBtn"),e.attr("data-theme","b"),e.text("Logout"),this}});return i});

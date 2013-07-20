@@ -1,0 +1,1 @@
+define(["jquery"],function(e,t,n){return e.fn.serializeObject=function(){var t={},n=this.serializeArray();return e.each(n,function(){t[this.name]!==undefined?(t[this.name].push||(t[this.name]=[t[this.name]]),t[this.name].push(this.value||"")):t[this.name]=this.value||""}),t},e});

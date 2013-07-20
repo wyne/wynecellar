@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit","models/wine/WineModel"],function(e,t,n,r,i){var s=r.Collection.extend({model:i});return s});

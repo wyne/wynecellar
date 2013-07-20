@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit"],function(e,t,n,r){var i=r.Model.extend({schemaName:"wine"});return i});

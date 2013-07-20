@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit"],function(e,t,n,r){var i=n.View.extend({tagName:"a",initialize:function(){this.render()},render:function(){var e=this.$el;return e.attr("data-role","button"),e.attr("href","#"),e.attr("data-icon","back"),e.attr("data-direction","reverse"),e.text("Back"),this}});return i});

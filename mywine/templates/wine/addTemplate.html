@@ -1,0 +1,30 @@
+<div data-role="header">
+    <h1>My Wines</h1>
+</div>
+<div data-role="content"> 
+  	<form  method="post" id="addForm">
+	  <legend>Add a Wine</legend>
+
+	  <label for="winery" class="ui-hidden-accessible">Winery Name:</label>
+	  <input type="text" placeholder="winery name" name="winery" class="winery" 
+	      autocapitalize="off" autocorrect="off" value="">
+
+	  <label for="year" class="ui-hidden-accessible">Year:</label>
+	  <input type="text" placeholder="year" type="numeric" name="year" class="year" 
+	      autocapitalize="off" autocorrect="off" value="">
+
+	  <label for="type" class="ui-hidden-accessible">Type:</label>
+	  <select name="type" id="type" data-native-menu="true" data-role="select">
+			<option value="Cabernet">Cabernet</option>
+			<option value="Pinot Noir">Pinot Noir</option>
+		</select> 
+
+	  <label for="size" class="ui-hidden-accessible">Size:</label>
+	  	<select name="size" id="size" data-role="slider">
+			<option value="750">750 ml</option>
+			<option value="1.5">1.5 liter</option>
+		</select> 
+
+	  <input type="submit" id="addBtn" class="large button" value="submit" />
+	</form>
+</div>

@@ -1,0 +1,13 @@
+{
+  "name": "myWine",
+  "description": "My wine app",
+  "launch_path": "/index.html",
+  "icons": {
+    "128": "/img/icon-128.png"
+  },
+  "developer": {
+    "name": "StackMob",
+    "url": "http://www.stackmob.com"
+  },
+  "default_locale": "en"
+}
