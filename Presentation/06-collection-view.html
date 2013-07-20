@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Collection Template</title>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+
+    <script>
+
+    (function($){
+
+        // Define Wine Model
+        var Wine = Backbone.Model.extend();
+
+        // Define Wines Collection
+        var Wines = Backbone.Collection.extend({
+            Model: Wine
+        });
+
+        // Create instances of Wine model
+        var wine1 = new Wine({ winery : 'Robert Mondovi', type: 'Pinot Noir' });
+        var wine2 = new Wine({ winery : 'CakeBread', type: 'Chardonnay' });
+
+        // Create instance of Wine Collection
+        var wines = new Wines();
+
+        // Add Wine models to the Wines Collection
+        wines.add(wine1);
+        wines.add(wine2);
+
+        // Define the Home View
+        HomeView = Backbone.View.extend({
+
+            el: 'body',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append("<h1>Wine Cellar</h1>");
+
+                winesView = new WinesView({ collection: wines });
+                this.$el.append( winesView.render().el );
+
+                return this;
+            }
+        });
+
+        // Define a Wine View
+        WineView = Backbone.View.extend({
+            tagName: 'li',
+
+            initialize: function() {
+                // Set template for this view once
+                this.template = _.template($('#wineTemplate').html());
+
+                // Then render it to the page
+                this.render();
+            },
+
+            render: function() {
+                // Clear out any old DOM elements there may be
+                this.$el.empty();
+
+                // Render template with model then append to DOM
+                this.$el.append( this.template(this.model.toJSON()) );
+
+                return this;
+            }
+        });
+
+        // Define a Wines View
+        WinesView = Backbone.View.extend({
+            tagName: 'ul',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                // Clear out any old DOM elements there may be
+                this.$el.empty();
+
+                // Save reference for use inside loop
+                var _this = this;
+
+                // Iterate over all wines in the collection
+                this.collection.each(function(item) {
+
+                    // And append a Wine view for each.
+                    _this.$el.append( new WineView({model: item}).render().$el );
+
+                });
+
+                return this;
+            }
+        });
+
+    }(jQuery));
+
+    $(document).ready(function() {
+        var view = new HomeView();
+    });
+
+    </script>
+
+    <script type="text/template" id="wineTemplate">
+        <strong>Winery:</strong> <%= winery %>
+    </script>
+
+<!-- ================================================================= /!-->
+
+</head>
+<body></body>
+</html>

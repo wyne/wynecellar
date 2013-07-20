@@ -12,33 +12,33 @@
 
     (function($){
 
-            // Define Wine Model
-            var Wine = Backbone.Model.extend();
+        // Define a Wine Model
+        var Wine = Backbone.Model.extend();
 
-            // Define Wines Collection
-            var Wines = Backbone.Collection.extend({
-                Model: Wine
-            });
+        // Define a Wines Collection
+        var Wines = Backbone.Collection.extend({
+            Model: Wine
+        });
 
-            // Create instances of Wine model
-            var wine1 = new Wine({winery : "Robert Mondovi"});
-            var wine2 = new Wine({winery : "CakeBread"});
+        // Create instances of Wine model
+        var wine1 = new Wine({ winery : 'Robert Mondovi', type: 'Pinot Noir' });
+        var wine2 = new Wine({ winery : 'CakeBread', type: 'Chardonnay' });
 
-            // Create instance of Wine Collection
-            var wines = new Wines();
+        // Create instance of Wine Collection
+        var wines = new Wines();
 
-            // Add Wine models to the Wines Collection
-            wines.add(wine1);
-            wines.add(wine2);
+        // Add Wine models to the Wines Collection
+        wines.add(wine1);
+        wines.add(wine2);
 
-            // Iterate over Wines Collection
-            wines.each( function(model) {
-                console.log(model.get('winery'));
-            });
+        // Iterate over Wines Collection
+        wines.each( function(model) {
+            console.log(model.get('winery'));
+        });
 
-            wines.each( function(model) {
-                console.log(model.toJSON());
-            });
+        wines.each( function(model) {
+            console.log(model.toJSON());
+        });
 
     }(jQuery));
 
