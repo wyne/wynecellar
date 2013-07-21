@@ -12,6 +12,9 @@
 
     var app = (function($){
 
+        // Router
+        var wineApp;
+
         // Define Wine Model
         var Wine = Backbone.Model.extend();
 
@@ -47,7 +50,8 @@
             el: 'body',
 
             events: {
-                "click #save-new-wine": "save"
+                "click #save-new-wine": "save",
+                "submit form":          "save"
             },
 
             initialize: function() {
@@ -71,6 +75,9 @@
 
                 // Clear the input box
                 this.$('#new-wine-winery').val('');
+
+                // Go back to the home page
+                wineApp.navigate("home", true);
 
                 return this;
             },
@@ -138,7 +145,7 @@
 
         // Define the Router
         var Router = Backbone.Router.extend({
-            routes:{
+            routes: {
                 "(home)":   "home",
                 "add":      "add"
             },
@@ -171,7 +178,7 @@
             wines.add(wine2);
 
             // Create instance of Router
-            var wineApp = new Router({ collection: wines });
+            wineApp = new Router({ collection: wines });
 
             // Route the initial URL and start watching for others
             Backbone.history.start();
