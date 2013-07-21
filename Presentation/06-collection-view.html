@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Collection Template</title>
+    <title>Collection View</title>
 
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://static.stackmob.com/js/json2-min.js"></script>
@@ -32,7 +32,7 @@
         wines.add(wine2);
 
         // Define the Home View
-        HomeView = Backbone.View.extend({
+        var HomeView = Backbone.View.extend({
 
             el: 'body',
 
@@ -52,7 +52,7 @@
         });
 
         // Define a Wine View
-        WineView = Backbone.View.extend({
+        var WineView = Backbone.View.extend({
             tagName: 'li',
 
             initialize: function() {
@@ -75,7 +75,7 @@
         });
 
         // Define a Wines View
-        WinesView = Backbone.View.extend({
+        var WinesView = Backbone.View.extend({
             tagName: 'ul',
 
             initialize: function() {
@@ -93,7 +93,7 @@
                 this.collection.each(function(item) {
 
                     // And append a Wine view for each.
-                    _this.$el.append( new WineView({model: item}).render().$el );
+                    _this.$el.append( new WineView({ model: item }).render().$el );
 
                 });
 
@@ -101,19 +101,17 @@
             }
         });
 
-    }(jQuery));
+        $(document).ready(function() {
+            var view = new HomeView();
+        });
 
-    $(document).ready(function() {
-        var view = new HomeView();
-    });
+    }(jQuery));
 
     </script>
 
     <script type="text/template" id="wineTemplate">
         <strong>Winery:</strong> <%= winery %>
     </script>
-
-<!-- ================================================================= /!-->
 
 </head>
 <body></body>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Collection Template</title>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+
+    <script>
+    // Define the router
+    var Router = Backbone.Router.extend({
+
+        routes: {
+            "home":                     "home", // #home
+            "search/:query":            "search", // #search/term
+            "search/:query/p:page":     "search", // #search/term/p4
+            // "search/:query(/p:page)":     "search", // #search/term/p4
+            "*action":                  "func"  // #anything-else
+        },
+
+        home: function() {
+            console.log("Home Page!");
+        },
+
+        search: function(query, page) {
+            console.log("Search page. Query=" + query + " Page=" + page);
+        },
+
+        func: function(action) {
+            console.log(action);
+        }
+
+    });
+
+    // Creat instace of the router
+    var router = new Router();
+
+    // Route the initial URL
+    Backbone.history.start();
+
+    </script>
+
+</head>
+<body>
+    <ul>
+        <li><a href="#home">#home</a></li>
+        <li><a href="#search/term">search/term</a></li>
+        <li><a href="#search/term/p4">search/term/p4</a></li>
+        <li><a href="#something/else">#something/else</a></li>
+    </ul>
+</body>
+</html>
