@@ -72,6 +72,9 @@
                 // Prevent normal link actions
                 ev.preventDefault();
 
+                // Save reference to this for use inside callback
+                var _this = this;
+
                 // Create a new wine instance with value
                 // from the input box
                 var wine = new Wine({
@@ -81,13 +84,13 @@
                 wine.create({
                     success: function(model, result, options){
                         // Add it to our collection
-                        this.collection.add(wine);
+                        _this.collection.add(wine);
 
                         // Clear the input box
-                        this.$('#wine-winery').val('');
+                        _this.$('#wine-winery').val('');
 
                         // Go back to the home page
-                        this.router.navigate("home", true);
+                        _this.router.navigate("home", true);
                     },
                     error: function(model, response, options){
                         console.log(response);
@@ -209,7 +212,7 @@
     </script>
 
     <script type="text/template" id="addTemplate">
-        <h1>Add a wine</h1>
+        <h1>Edit Wine</h1>
         <a href="#home" class="remove">&laquo; Back home</a>
 
         <form>
