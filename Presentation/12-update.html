@@ -7,23 +7,32 @@
     <script src="http://static.stackmob.com/js/json2-min.js"></script>
     <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
     <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+    <script src="http://static.stackmob.com/js/stackmob-js-0.9.2-min.js"></script>
 
     <script>
+
+    StackMob.init({
+        publicKey: "4762736f-56c2-4de1-a520-cf1610ed8ff2",
+        apiVersion: 0
+    });
 
     var app = (function($){
 
         // Define Wine Model
-        var Wine = Backbone.Model.extend();
+        var Wine = StackMob.Model.extend({
+            schemaName: "wine",
+            defaults: {
+                winery: ""
+            }
+        });
 
         // Define Wines Collection
-        var Wines = Backbone.Collection.extend({
-            Model: Wine
+        var Wines = StackMob.Collection.extend({
+            model: Wine
         });
 
         // Define the Home View
         var HomeView = Backbone.View.extend({
-
-            el: 'body',
 
             initialize: function() {
                 this.render();
@@ -44,7 +53,64 @@
         // Define an Add View
         var AddView = Backbone.View.extend({
 
-            el: 'body',
+            events: {
+                "click #save-wine": "save",
+                "submit form":      "save"
+            },
+
+            initialize: function() {
+                this.template = _.template($('#addTemplate').html());
+
+                // Attach router
+                this.router = this.options.router;
+
+                //
+                this.model = new Wine();
+
+            },
+
+            save: function(ev) {
+                // Prevent normal link actions
+                ev.preventDefault();
+
+                // Save reference to this for use inside callback
+                var _this = this;
+
+                // Create a new wine instance with value
+                // from the input box
+                var wine = new Wine({
+                    winery: this.$('#wine-winery').val()
+                });
+
+                wine.create({
+                    success: function(model, result, options){
+                        // Add it to our collection
+                        _this.collection.add(wine);
+
+                        // Clear the input box
+                        _this.$('#wine-winery').val('');
+
+                        // Go back to the home page
+                        _this.router.navigate("home", true);
+                    },
+                    error: function(model, response, options){
+                        console.log(response);
+                    }
+                });
+
+                return this;
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append( this.template(this.model.toJSON()) );
+
+                return this;
+            }
+        });
+
+        // Define Update View
+        var UpdateView = Backbone.View.extend({
 
             events: {
                 "click #save-wine": "save",
@@ -57,70 +123,27 @@
                 // Attach router
                 this.router = this.options.router;
 
-                this.render();
-            },
-
-            save: function(ev) {
-                // Prevent normal link actions
-                ev.preventDefault();
-
-                // Create a new wine instance with value
-                // from the input box
-                var wine = new Wine({
-                    winery: this.$('#wine-winery').val()
-                });
-
-                // Add it to our collection
-                this.collection.add(wine);
-
-                // Clear the input box
-                this.$('#wine-winery').val('');
-
-                // Go back to the home page
-                this.router.navigate("home", true);
-
-                return this;
-            },
-
-            render: function() {
-                this.$el.empty();
-                this.$el.append( this.template() );
-
-                return this;
-            }
-        });
-
-        // Degine Update View
-        var UpdateView = Backbone.View.extend({
-
-            events: {
-                "click #saveBtn": "save"
-            },
-
-            initialize: function() {
-                this.template = _.template($('#addTemplate').html());
-                this.model = this.options.model;
-                this.router = this.options.router;
-            },
-
-            render: function() {
-                this.$el.empty();
-                this.$el.append(this.template(this.model.toJSON()));
-
-                return this;
             },
 
             save: function(e) {
-                var collection = this.collection,
-                    router = this.router;
+                // Save reference to this for use inside callback
+                var _this = this;
 
                 e.preventDefault();
-
-                this.model.save({winery:$('#winery').val() },{
+                console.log("save");
+                // Persist changes to server
+                this.model.save({ winery: $('#wine-winery').val() },{
                     success: function(model){
-                        router.navigate('#',{trigger: true, replace: false});
+                        _this.router.navigate('#', true);
                     }
                 });
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append( this.template(this.model.toJSON()) );
+
+                return this;
             }
         });
 
@@ -132,8 +155,6 @@
                 // Set template for this view once
                 this.template = _.template($('#wineTemplate').html());
 
-                // Then render it to the page
-                this.render();
             },
 
             render: function() {
@@ -155,7 +176,6 @@
                 // Trigger a render when this collection changes
                 this.collection.on('all', this.render, this);
 
-                this.render();
             },
 
             render: function() {
@@ -187,36 +207,33 @@
 
             initialize:function(options) {
                 this.collection = options.collection;
-                this.homeView = new HomeView({ collection: this.collection, router: this });
-                this.addView = new AddView({ collection: this.collection, router: this });
-                // this.updateView = new UpdateView({ collection: this.collection, router: this });
             },
 
             home: function () {
-                this.homeView.render();
+                this.changePage( new HomeView({ collection : this.collection }) );
             },
 
             add: function () {
-                this.addView.render();
+                this.changePage( new AddView({ collection : this.collection, router : this }) );
             },
 
-            update: function(wine_id) {
-                this.model = this.collection.get(wine_id);
-                this.updateView.render({ model: this.model });
+            update: function (e) {
+                var model = this.collection.get(e);
+                this.changePage( new UpdateView({ model : model, router : this }) );
+            },
+
+            changePage: function (page) {
+                $('body').empty();
+                $('body').append( $(page.render().el) );
             }
         });
 
         var initialize = function(options) {
-            // Create instances of Wine model
-            var wine1 = new Wine({ winery : 'Robert Mondovi', type: 'Pinot Noir' });
-            var wine2 = new Wine({ winery : 'CakeBread', type: 'Chardonnay' });
-
             // Create instance of Wine Collection
             var wines = new Wines();
 
             // Add Wine models to the Wines Collection
-            wines.add(wine1);
-            wines.add(wine2);
+            wines.fetch({ async: false });
 
             // Create instance of Router
             var appRouter = new Router({ collection: wines });
@@ -236,13 +253,12 @@
     </script>
 
     <script type="text/template" id="wineTemplate">
-        <a href="#update/<%= winery %>">
-            <strong>Winery:</strong> <%= winery %>
-        </a>
+        <strong>Winery:</strong> <%= winery %>
+        <a href="#update/<%= wine_id %>">[Edit]</a>
     </script>
 
     <script type="text/template" id="addTemplate">
-        <h1>Add a wine</h1>
+        <h1>Edit wine</h1>
         <a href="#home" class="remove">&laquo; Back home</a>
 
         <form>
@@ -252,6 +268,7 @@
                 <input id="wine-winery" name="wine-winery" type="text" value="<%= winery %>">
 
                 <div>
+                    <a href="#">cancel</a>
                     <a href="#" id="save-wine">save</a>
                 </div>
 
