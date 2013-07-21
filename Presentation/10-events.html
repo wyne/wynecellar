@@ -12,15 +12,12 @@
 
     var app = (function($){
 
-        // Router
-        var wineApp;
-
         // Define Wine Model
         var Wine = Backbone.Model.extend();
 
         // Define Wines Collection
         var Wines = Backbone.Collection.extend({
-            Model: Wine
+            model: Wine
         });
 
         // Define the Home View
@@ -50,12 +47,15 @@
             el: 'body',
 
             events: {
-                "click #save-new-wine": "save",
-                "submit form":          "save"
+                "click #save-wine": "save",
+                "submit form":      "save"
             },
 
             initialize: function() {
                 this.template = _.template($('#addTemplate').html());
+
+                // Attach router
+                this.router = this.options.router;
 
                 this.render();
             },
@@ -67,17 +67,17 @@
                 // Create a new wine instance with value
                 // from the input box
                 var wine = new Wine({
-                    winery: this.$('#new-wine-winery').val()
+                    winery: this.$('#wine-winery').val()
                 });
 
                 // Add it to our collection
                 this.collection.add(wine);
 
                 // Clear the input box
-                this.$('#new-wine-winery').val('');
+                this.$('#wine-winery').val('');
 
                 // Go back to the home page
-                wineApp.navigate("home", true);
+                this.router.navigate("home", true);
 
                 return this;
             },
@@ -152,8 +152,8 @@
 
             initialize:function(options) {
                 this.collection = options.collection;
-                this.homeView = new HomeView({ collection: this.collection });
-                this.addView = new AddView({ collection: this.collection });
+                this.homeView = new HomeView({ collection: this.collection, router: this });
+                this.addView = new AddView({ collection: this.collection, router: this });
             },
 
             home: function () {
@@ -178,7 +178,7 @@
             wines.add(wine2);
 
             // Create instance of Router
-            wineApp = new Router({ collection: wines });
+            var appRouter = new Router({ collection: wines });
 
             // Route the initial URL and start watching for others
             Backbone.history.start();
@@ -205,11 +205,11 @@
         <form>
             <fieldset>
                 <legend>Wine Detail</legend>
-                <label for="new-wine-winery">Winery Name:</label>
-                <input id="new-wine-winery" name="new-wine-winery" type="text" value="">
+                <label for="wine-winery">Winery Name:</label>
+                <input id="wine-winery" name="wine-winery" type="text" value="">
 
                 <div>
-                    <a href="#" id="save-new-wine">save</a>
+                    <a href="#" id="save-wine">save</a>
                 </div>
 
             </fieldset>
