@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Events</title>
+
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="http://static.stackmob.com/js/json2-min.js"></script>
+    <script src="http://static.stackmob.com/js/underscore-1.4.4-min.js"></script>
+    <script src="http://static.stackmob.com/js/backbone-1.0.0-min.js"></script>
+
+    <script>
+
+    var app = (function($){
+
+        // Define Wine Model
+        var Wine = Backbone.Model.extend();
+
+        // Define Wines Collection
+        var Wines = Backbone.Collection.extend({
+            Model: Wine
+        });
+
+        // Define the Home View
+        var HomeView = Backbone.View.extend({
+
+            el: 'body',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append("<h1>Wine Cellar</h1>");
+                this.$el.append("<a href='#add'>Add wine</a>");
+
+                winesView = new WinesView({ collection: this.collection });
+                this.$el.append( winesView.render().el );
+
+                return this;
+            }
+        });
+
+        // Define an Add View
+        var AddView = Backbone.View.extend({
+
+            el: 'body',
+
+            events: {
+                "click #save-new-wine": "save"
+            },
+
+            initialize: function() {
+                this.template = _.template($('#addTemplate').html());
+
+                this.render();
+            },
+
+            save: function(ev) {
+                // Prevent normal link actions
+                ev.preventDefault();
+
+                // Create a new wine instance with value
+                // from the input box
+                var wine = new Wine({
+                    winery: this.$('#new-wine-winery').val()
+                });
+
+                // Add it to our collection
+                this.collection.add(wine);
+
+                // Clear the input box
+                this.$('#new-wine-winery').val('');
+
+                return this;
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append( this.template() );
+
+                return this;
+            }
+        });
+
+        // Define a Wine View
+        var WineView = Backbone.View.extend({
+            tagName: 'li',
+
+            initialize: function() {
+                // Set template for this view once
+                this.template = _.template($('#wineTemplate').html());
+
+                // Then render it to the page
+                this.render();
+            },
+
+            render: function() {
+                // Clear out any old DOM elements there may be
+                this.$el.empty();
+
+                // Render template with model then append to DOM
+                this.$el.append( this.template(this.model.toJSON()) );
+
+                return this;
+            }
+        });
+
+        // Define a Wines View
+        var WinesView = Backbone.View.extend({
+            tagName: 'ul',
+
+            initialize: function() {
+                // Trigger a render when this collection changes
+                this.collection.on('all', this.render, this);
+
+                this.render();
+            },
+
+            render: function() {
+                // Clear out any old DOM elements there may be
+                this.$el.empty();
+
+                // Save reference for use inside loop
+                var _this = this;
+
+                // Iterate over all wines in the collection
+                this.collection.each(function(item) {
+
+                    // And append a Wine view for each.
+                    _this.$el.append( new WineView({ model: item }).render().$el );
+
+                });
+
+                return this;
+            }
+        });
+
+        // Define the Router
+        var Router = Backbone.Router.extend({
+            routes:{
+                "(home)":   "home",
+                "add":      "add"
+            },
+
+            initialize:function(options) {
+                this.collection = options.collection;
+                this.homeView = new HomeView({ collection: this.collection });
+                this.addView = new AddView({ collection: this.collection });
+            },
+
+            home: function () {
+                this.homeView.render();
+            },
+
+            add: function () {
+                this.addView.render();
+            }
+        });
+
+        var initialize = function(options) {
+            // Create instances of Wine model
+            var wine1 = new Wine({ winery : 'Robert Mondovi', type: 'Pinot Noir' });
+            var wine2 = new Wine({ winery : 'CakeBread', type: 'Chardonnay' });
+
+            // Create instance of Wine Collection
+            var wines = new Wines();
+
+            // Add Wine models to the Wines Collection
+            wines.add(wine1);
+            wines.add(wine2);
+
+            // Create instance of Router
+            var wineApp = new Router({ collection: wines });
+
+            // Route the initial URL and start watching for others
+            Backbone.history.start();
+        };
+
+        return { initialize: initialize };
+
+    }(jQuery));
+
+    $(document).ready(function() {
+        app.initialize();
+    });
+
+    </script>
+
+    <script type="text/template" id="wineTemplate">
+        <strong>Winery:</strong> <%= winery %>
+    </script>
+
+    <script type="text/template" id="addTemplate">
+        <h1>Add a wine</h1>
+        <a href="#home" class="remove">&laquo; Back home</a>
+
+        <form>
+            <fieldset>
+                <legend>Wine Detail</legend>
+                <label for="new-wine-winery">Winery Name:</label>
+                <input id="new-wine-winery" name="new-wine-winery" type="text" value="">
+
+                <div>
+                    <a href="#" id="save-new-wine">save</a>
+                </div>
+
+            </fieldset>
+        </form>
+    </script>
+
+</head>
+<body></body>
+</html>

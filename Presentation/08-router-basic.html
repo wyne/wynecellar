@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Basic Template</title>
+    <title>Router</title>
 
     <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
     <script src="http://static.stackmob.com/js/json2-min.js"></script>
@@ -10,7 +10,7 @@
 
     <script>
 
-    (function($){
+    var app = (function($){
 
         // Define Wine Model
         var Wine = Backbone.Model.extend();
@@ -44,8 +44,25 @@
                 this.$el.empty();
                 this.$el.append("<h1>Wine Cellar</h1>");
 
-                wineView = new WineView({ model: wine1 });
-                this.$el.append( wineView.render().el );
+                winesView = new WinesView({ collection: wines });
+                this.$el.append( winesView.render().el );
+
+                return this;
+            }
+        });
+
+        // Define an Add View
+        var AddView = Backbone.View.extend({
+
+            el: 'body',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                this.$el.empty();
+                this.$el.append("<h1>Add a wine</h1>");
 
                 return this;
             }
@@ -53,7 +70,7 @@
 
         // Define a Wine View
         var WineView = Backbone.View.extend({
-            tagName: 'div',
+            tagName: 'li',
 
             initialize: function() {
                 // Set template for this view once
@@ -74,11 +91,64 @@
             }
         });
 
-        $(document).ready(function() {
-            var view = new HomeView();
+        // Define a Wines View
+        var WinesView = Backbone.View.extend({
+            tagName: 'ul',
+
+            initialize: function() {
+                this.render();
+            },
+
+            render: function() {
+                // Clear out any old DOM elements there may be
+                this.$el.empty();
+
+                // Save reference for use inside loop
+                var _this = this;
+
+                // Iterate over all wines in the collection
+                this.collection.each(function(item) {
+
+                    // And append a Wine view for each.
+                    _this.$el.append( new WineView({ model: item }).render().$el );
+
+                });
+
+                return this;
+            }
         });
 
+        // Define the Router
+        var Router = Backbone.Router.extend({
+            routes:{
+                "(home)":   "home",
+                "add":      "add"
+            },
+
+            home: function () {
+                new HomeView();
+            },
+
+            add: function () {
+                new AddView();
+            }
+        });
+
+        var initialize = function() {
+            // Create instance of Router
+            var wineApp = new Router();
+
+            // Route the initial URL and start watching for others
+            Backbone.history.start();
+        }
+
+        return { initialize: initialize };
+
     }(jQuery));
+
+    $(document).ready(function() {
+        app.initialize();
+    });
 
     </script>
 
