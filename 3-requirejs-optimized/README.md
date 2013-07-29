@@ -1,0 +1,1 @@
+This directory builds on the previous by "compiling" the development version of the project into a production-ready format with minified javascript.

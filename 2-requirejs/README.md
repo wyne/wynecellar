@@ -1,0 +1,1 @@
+This directory contains the project split out into smaller reusable modules for use with RequireJS.
