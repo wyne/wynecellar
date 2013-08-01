@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit","views/WineView"],function(e,t,n,r,i){var s=n.View.extend({tagName:"ul",className:"nav nav-list",initialize:function(){this.collection.on("all",this.render,this)},render:function(){this.$el.empty();var e=this;return this.collection.each(function(t){e.$el.append((new i({model:t})).render().$el)}),this}});return s});

@@ -1,0 +1,1 @@
+define(["stackmobinit"],function(e){var t=e.Model.extend({schemaName:"wine",defaults:{winery:"",type:"",size:""}});return t});
