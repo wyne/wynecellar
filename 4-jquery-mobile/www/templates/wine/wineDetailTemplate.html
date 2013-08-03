@@ -1,0 +1,34 @@
+<div data-role="header">
+    <a href="#" data-icon="home" class="ui-btn-left">Back</a>
+    <h1>Wine Detail</h1>
+</div>
+<div data-role="content">
+    <form>
+        <fieldset>
+            <legend>Wine Detail</legend>
+            <label for="wine-winery">Winery Name:</label>
+            <input id="wine-winery" name="wine-winery" type="text" value="<%= winery %>">
+    
+            <label for="wine-size">Size:</label>
+            <select id="wine-size">
+                <option value="375">375 ml</option>
+                <option value="750">750 ml</option>
+                <option value="1500">1.5 l</option>
+            </select>
+    
+            <label for="wine-type">Wine Type:</label>
+            <select id="wine-type">
+                <option value="chardonnay">Chardonnay</option>
+                <option value="cabernet">Cabernet Savignon</option>
+                <option value="pinotnoir">Pinot Noir</option>
+                <option value="zinfandel">Zinfandel</option>
+            </select>
+    
+            <div>
+                <a href="#" class="btn">Cancel</a>
+                <button type="submit" id="save-wine" class="btn btn-primary">Save</button>
+            </div>
+    
+        </fieldset>
+    </form>
+</div>

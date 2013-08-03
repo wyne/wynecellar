@@ -1,6 +1,7 @@
 // Filename: router.js
 define([
   'jquery',
+  'jquery.mobile',
   'stackmobinit',
   'libs/app/util',
   'views/wine/MainView',

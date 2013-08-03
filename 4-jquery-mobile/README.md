@@ -1,0 +1,1 @@
+This directory contains the project with jQuery Mobile added for a more mobile looking style.

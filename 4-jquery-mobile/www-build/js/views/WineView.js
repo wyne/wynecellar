@@ -1,0 +1,1 @@
+define(["jquery","underscore","backbone","stackmobinit","text!templates/wine/wineTemplate.html"],function(e,t,n,r,i){var s=n.View.extend({tagName:"li",initialize:function(){this.template=t.template(i)},render:function(){return this.$el.empty(),this.$el.append(this.template(this.model.toJSON())),this}});return s});
