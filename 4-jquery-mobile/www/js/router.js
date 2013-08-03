@@ -56,7 +56,7 @@ define([
                 page = view.el; 
             }
 
-            $.mobile.changePage( $(page), {transition: 'flip'} );
+            $.mobile.changePage( $(page), {transition: 'fade'} );
         }
     });
 

@@ -9,13 +9,13 @@ define([
     // Define a Wines View
     var WinesView = Backbone.View.extend({
         tagName: 'ul',
+
+        className: 'winesView',
+
         attributes: {
             "data-role": "listview",
             "data-inset": "true"
         },
-
-        // Add class for Bootstrap styles
-        className: "nav nav-list",
 
         initialize: function() {
             // Trigger a render when this collection changes
@@ -37,6 +37,9 @@ define([
                 _this.$el.append( new WineView({ model: item }).render().$el );
 
             });
+
+            // Refresh listview for jquery mobile styles
+            $("." + this.className).listview("refresh");
 
             return this;
         }
