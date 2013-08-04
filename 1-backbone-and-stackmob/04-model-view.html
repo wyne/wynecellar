@@ -44,7 +44,7 @@
                 this.$el.empty();
                 this.$el.append("<h1>Wine Cellar</h1>");
 
-                wineView = new WineView({ model: wine1 });
+                var wineView = new WineView({ model: wine1 });
                 this.$el.append( wineView.render().el );
 
                 return this;
